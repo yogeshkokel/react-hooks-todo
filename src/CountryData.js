@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CurrencyData from './CurrencyData';
+import useDocTitle from './customHooks/useDocTitle';
 
 export const CountryContext = React.createContext();
 
 function CountryData() {
     const [countries, setCountryData] = useState([]);
 
+    useDocTitle('This is Country Page');
     useEffect(() => {
         axios.get('https://restcountries.eu/rest/v2/all')
             .then((response) => {

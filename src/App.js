@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import "./App.css";
+import useDocTitle from './customHooks/useDocTitle';
+import useInput from './customHooks/useInput';
 
 function Todo({ todo, index, onComplete, removeTodo, onEditTodo, onSaveTodo }) {
   const [newTitle, setTitle] = useState(todo.title);
@@ -36,7 +38,8 @@ function Todo({ todo, index, onComplete, removeTodo, onEditTodo, onSaveTodo }) {
 }
 
 function TodoForm({ addTodo }) {
-  const [value, setValue] = useState('')
+  // const [value, setValue] = useState('')
+  const [value, resetValue, bindValue] = useInput('')
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -44,14 +47,15 @@ function TodoForm({ addTodo }) {
       return;
     } else {
       addTodo(value);
-      setValue('');
+      resetValue()
     }
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input className="input" placeholder="Add Todo..." type="text" value={value} onChange={e => setValue(e.target.value)} />
+        {/* <input className="input" placeholder="Add Todo..." type="text" value={value} onChange={e => setValue(e.target.value)} /> */}
+        <input className="input" placeholder="Add Todo..." type="text" {...bindValue} />
       </form>
     </div>
   )
@@ -78,6 +82,7 @@ function App() {
   const [valueModified, setModified] = useState(null);
   const [currentDate, setDate] = useState(new Date());
 
+  useDocTitle('This is todo page');
   useEffect(() => {
     const interval = setInterval(() => {
       setDate(new Date())
